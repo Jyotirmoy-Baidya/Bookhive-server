@@ -1,5 +1,6 @@
 //Register -> create new user in the database using email
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import User from "../models/User.js"; // adjust the path if necessary
 import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js";
@@ -10,7 +11,7 @@ import UserConnections from "../models/UserConnections.js";
 //Add a new user to the Database
 export const registerUser = async (req, res) => {
     try {
-        const { email, user_name } = req.body;
+        const { email, user_name,password } = req.body;
 
         // Check if user already exists by email or username
         const existingUser = await User.findOne({ email });
@@ -20,11 +21,14 @@ export const registerUser = async (req, res) => {
                 .status(STATUS_CODES.CONFLICT)
                 .json(new ApiError(STATUS_CODES.CONFLICT, 'User with this email or username already exists'));
         }
+        const salt =await bcrypt.genSalt(10);
+        const hashedPassword=await bcrypt.hash(password,salt);
 
         // Create and save the new user
         const newUser = new User({
             email,
-            user_name
+            user_name,
+            password:hashedPassword
         });
 
         await newUser.save();
@@ -60,7 +64,7 @@ export const registerUser = async (req, res) => {
         res
             .status(STATUS_CODES.CREATED)
             .json
-            (new ApiResponse(STATUS_CODES.CREATED, 'New User Resgitered', token));
+            (new ApiResponse(STATUS_CODES.CREATED, 'New User Registered', token));
 
     } catch (error) {
         console.error("Registration error:", error);
@@ -73,16 +77,19 @@ export const registerUser = async (req, res) => {
 //Login User
 export const loginUser = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email,password } = req.body;
 
         // Check if user exists by email
         const existingUser = await User.findOne({ email });
 
         //if no user exists
         if (!existingUser) {
-            return res
-                .status(STATUS_CODES.NOT_FOUND)
-                .json(new ApiError(STATUS_CODES.NOT_FOUND, "User not found"));
+            return res.status(STATUS_CODES.NOT_FOUND).json(new ApiError(STATUS_CODES.NOT_FOUND, "User not found"));
+        }
+        const isMatch=await bcrypt.compare(password,existingUser.password);
+        if(!isMatch){
+            return res.status(STATUS_CODES.UNAUTHORIZED).json(new ApiError(STATUS_CODES.UNAUTHORIZED,"Invalid Credentials"));
+
         }
 
         //Generate jwt token
