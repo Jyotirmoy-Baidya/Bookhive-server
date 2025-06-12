@@ -29,6 +29,9 @@ import userConnectionRouter from './routes/UserConnectionRoutes.js'
 app.use("/api/v1/user-connection", userConnectionRouter);
 import tagsRouter from './routes/TagsRouter.js'
 app.use("/api/v1/tags", tagsRouter);
+import bookRouter from './routes/BookRouter.js'
+app.use("/api/v1/books", bookRouter);
+
 
 
 

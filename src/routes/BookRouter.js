@@ -1,7 +1,7 @@
 import express from 'express'
-import authMiddleware from '../middlewares/authMiddleware';
-import { createBook, deleteBookById, getAllBooks, updateBookById } from '../controllers/BookController';
-import { addBidToBook, deleteBidFromBook, updateBidOnBook } from '../controllers/BookBidController';
+import authMiddleware from '../middlewares/authMiddleware.js';
+import { createBook, deleteBookById, getAllBooks, updateBookById } from '../controllers/BookController.js';
+import { addBidToBook, deleteBidFromBook, updateBidOnBook } from '../controllers/BookBidController.js';
 
 const router = express.Router()
 

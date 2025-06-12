@@ -1,6 +1,6 @@
-import { STATUS_CODES } from "../constants/contants";
-import ApiError from "../utils/ApiError";
-import ApiResponse from "../utils/ApiResponse";
+import { STATUS_CODES } from "../constants/contants.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
 
 export const addBidToBook = async (req, res) => {
     try {

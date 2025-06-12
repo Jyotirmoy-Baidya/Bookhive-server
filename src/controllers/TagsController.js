@@ -4,8 +4,9 @@ import ApiError from "../utils/ApiError.js"
 import ApiResponse from "../utils/ApiResponse.js";
 
 export const getAllTags = async (req, res) => {
+    console.log('s');
     try {
-        const tags = await Tag.find().select('name -_id');
+        const tags = await Tag.find().select('name');
         res.status(STATUS_CODES.OK).json(new ApiResponse(STATUS_CODES.OK, "All Tags Fetched", tags))
     } catch (error) {
         res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json(new ApiError(STATUS_CODES.INTERNAL_SERVER_ERROR, "Internal Server Error"));

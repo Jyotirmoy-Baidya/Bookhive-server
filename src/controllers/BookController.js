@@ -1,9 +1,9 @@
 
 import mongoose from 'mongoose';
-import { Book } from '../models/Book';
-import { STATUS_CODES } from '../constants/contants';
-import ApiError from '../utils/ApiError';
-import ApiResponse from '../utils/ApiResponse';
+import { Book } from '../models/Book.js';
+import { STATUS_CODES } from "../constants/contants.js"
+import ApiError from '../utils/ApiError.js';
+import ApiResponse from '../utils/ApiResponse.js';
 
 export const getAllBooks = async (req, res) => {
     try {
@@ -52,6 +52,7 @@ export const getAllBooks = async (req, res) => {
 
 // Create a new book
 export const createBook = async (req, res) => {
+    console.log('test');
     try {
         const userId = req.user.userId;
         const {
